@@ -9,21 +9,26 @@
 
      <span v-show="isWalletConnected"> <p>Conectado</p>
         <h3>Conectado:</h3> {{ displayEthAddress }} (see in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)
-     </span>
-
-     <span> <!-- v-show="!isWalletConnected" -->
-        <button v-on:click="conectarWalletEthereum">Conectar con Wallet Ethereum</button>
-     </span>
-
-  <!--- Mostramos saldo --->
-      <div class="saldo" v-show="isWalletConnected">
+  
+      <div class="saldo">
          SALDO:  {{ token_saldo }} 
          <button v-on:click="getSaldoTokens">Leer saldo</button>
       </div>
 
-      <div class="faucet" v-show="isWalletConnected">
-         SALDO:  {{ "Token.name" }}
+      <div class="faucet">
+         <span v-if="isClaimed">
+         Ya se han reclamado los Ayusos que correspondían a esta cuenta.
+         </span>
+
+         <span v-if="!isClaimed">
+         <button v-on:click="claimTokens">Reclamar</button> 
+         </span>
       </div>
+     </span>
+
+     <span v-show="!isWalletConnected">
+        <button v-on:click="conectarWalletEthereum">Conectar con Wallet Ethereum</button>
+     </span>
 
   </div>
 </template>
@@ -32,6 +37,7 @@
 
 import {connectToEthereum, Dapp, setupDapp } from '../domain/helpers'
 
+// Las direcciones de los contratos deberían estar en un fichero aparte
 var dapp = new Dapp(
   '0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87', // Token Address
   '0x602C71e4DAC47a042Ee7f46E0aee17F94A3bA0B6'  // Faucet contract address
