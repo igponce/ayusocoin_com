@@ -1,0 +1,10 @@
+
+.warning {
+    display: inline-block;
+    text-indent: -9999px;
+    background: url('Warning sign.svg');
+    height: 2em;
+    width: 2em;
+    background-size: contain;
+    align-self: center;
+}

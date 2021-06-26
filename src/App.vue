@@ -9,6 +9,7 @@
 // import HelloWorld from './components/HelloWorld.vue'
 import Walletconnect from './components/Walletconnect.vue'
 import LandingPage from './components/LandingPage.vue'
+require ('./assets/app.css')
 
 export default {
   name: 'App',
