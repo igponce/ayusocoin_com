@@ -8,7 +8,27 @@ import Web3  from "web3"
 import { abi as ERC20ABI } from './ERC20.json'
 import { abi as FaucetABI } from './Faucet.json'
 
-export { Dapp, connectToEthereum, setupDapp }
+export { Dapp, connectToEthereum, setupDapp, formateaToken }
+
+function formateaToken (x) {
+    const str_x = String(x)
+    console.log(x, str_x)
+    var enteros
+    var decimales
+    if(str_x.length > 6) {
+       console.log("aki")
+       enteros = str_x.slice(0,-6)
+       decimales = str_x.slice(enteros.length)
+       console.log(enteros, decimales)
+    } else {
+       enteros = "0"
+       decimales = str_x.padStart(6,"0")
+    }
+
+    const token_symbol = Number(enteros) == 1 ? "A¥USO" : "A¥USOS"
+   
+    return `${enteros}.${decimales} ${token_symbol}`
+}
 
 async function connectToEthereum() {
 

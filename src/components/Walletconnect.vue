@@ -44,7 +44,7 @@
 <script>
 // import func from 'vue-editor-bridge';
 
-import {connectToEthereum, Dapp, setupDapp } from '../domain/helpers'
+import {connectToEthereum, Dapp, setupDapp, formateaToken } from '../domain/helpers'
 
 // Las direcciones de los contratos deberían estar en un fichero aparte
 var dapp = new Dapp(
@@ -76,9 +76,6 @@ export default {
     eth_addr: String
   },
   data: function() {
-     console.log("DATA()")
-     console.log(status)
-     console.log("END_DATA(")
      return status;
   },
   mounted() {
@@ -86,23 +83,16 @@ export default {
   },
   methods: {
      conectarWalletEthereum : async function() {
-         // Se llama desde el click handler
-
-         console.log("Window.web3")
-         console.log(window.web3)
-         if (status.isEthereumEnabled) { // was (window.ethereum) {
-            console.log("STATUS_PRE = " + status)
+         if (status.isEthereumEnabled) { 
             var new_status = await connectToEthereum()
             for (const [k,v] of Object.entries(new_status)) {
                status[k] = v
             }
             contracts = await setupDapp() // ToDO error check
-            console.log("SETUPDAPP:")
-            console.log(contracts)
+            await this.getSaldoTokens()
             window.contracts = contracts // para debg
             return true;   
          } 
-         console.log("Window_ethereum :-(");
          status.isWalletConnected = false;
          return false;
       },
@@ -115,21 +105,8 @@ export default {
          console.log(contracts)
          
          var saldo = await token.methods.balanceOf(status.ethAddress).call()
-                              .then( function(x) {
-                                        window.alert(x)
-                                           const str_x = String(x)
-                                        window.alert(str_x) 
-                                        window.alert(str_x.length)
-                                        window.alert(`${str_x.slice(0,-6)}.${str_x.slice(-6)}`)
-
-                                        if(str_x.length > 6) {
-                                           return `${str_x.slice(0,-6)}.${str_x.slice(-6)} Ayusos` 
-                                        } else {
-                                           return `0.${str_x} Ayusos`
-                                        }
-                              }).catch( () => { return "No se puede leer balance" })
-         console.log("getSaldoTokens")
-         console.log(saldo)
+                              .then( x => formateaToken(x) )
+                              .catch( () => { return "No se puede leer balance" })
          status.token_saldo = saldo
       },
 
