@@ -1,15 +1,17 @@
 <template>
   <div class="walletconnect">
-   <pre>
-   isEthereumEnabled -> {{ isEthereumEnabled }}
-   isWalletConnected -> {{ isWalletConnected }}
-   ethAddress -> {{ displayEthAddress }}
-    </pre>
+
+     <!-- El navegador no soporta ethereum (metamask, etc) -->
+
+     <span v-show="!isEthereumEnabled">
+        <li class="warning"></li>
+        <p>Este navegador no soporta Ethereum. Instala <em>plugin</em>&nbsp;<a href="https://metamask.io">Metamask</a>para activarlo.</p>
+     </span>
      <!-- si no estamos conectados a ningun wallet -->
 
      <span v-show="isWalletConnected"> <p>Conectado</p>
         <h3>Conectado:</h3> {{ displayEthAddress }} (see in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)
-  
+
       <div class="saldo">
          SALDO:  {{ token_saldo }} 
          <button v-on:click="getSaldoTokens">Leer saldo</button>
@@ -30,10 +32,17 @@
         <button v-on:click="conectarWalletEthereum">Conectar con Wallet Ethereum</button>
      </span>
 
+     <pre>
+   isEthereumEnabled -> {{ isEthereumEnabled }}
+   isWalletConnected -> {{ isWalletConnected }}
+   ethAddress -> {{ displayEthAddress }}
+    </pre>
+
   </div>
 </template>
 
 <script>
+// import func from 'vue-editor-bridge';
 
 import {connectToEthereum, Dapp, setupDapp } from '../domain/helpers'
 
@@ -53,7 +62,8 @@ var status = {
      isWalletConnected: 0,
      ethAddress: "None",
      displayEthAddress: "No conectado",
-     token_saldo: 0,
+     isClaimed: false,
+     token_saldo: "0",
      faucet_canclaim: 0,
      web3: null,
      dapp: dapp
@@ -77,6 +87,9 @@ export default {
   methods: {
      conectarWalletEthereum : async function() {
          // Se llama desde el click handler
+
+         console.log("Window.web3")
+         console.log(window.web3)
          if (status.isEthereumEnabled) { // was (window.ethereum) {
             console.log("STATUS_PRE = " + status)
             var new_status = await connectToEthereum()
@@ -86,8 +99,8 @@ export default {
             contracts = await setupDapp() // ToDO error check
             console.log("SETUPDAPP:")
             console.log(contracts)
-            window.alert("setupdapp")
-            return true;
+            window.contracts = contracts // para debg
+            return true;   
          } 
          console.log("Window_ethereum :-(");
          status.isWalletConnected = false;
@@ -95,13 +108,53 @@ export default {
       },
 
       getSaldoTokens: async function() {
+
+         const token = contracts.token
+
          console.log("getSaldoTokens")
          console.log(contracts)
+         
+         var saldo = await token.methods.balanceOf(status.ethAddress).call()
+                              .then( function(x) {
+                                        window.alert(x)
+                                           const str_x = String(x)
+                                        window.alert(str_x) 
+                                        window.alert(str_x.length)
+                                        window.alert(`${str_x.slice(0,-6)}.${str_x.slice(-6)}`)
 
-         var saldo = await contracts.token.methods.balanceOf(status.ethAddress).call().then(x=>x+1234)
+                                        if(str_x.length > 6) {
+                                           return `${str_x.slice(0,-6)}.${str_x.slice(-6)} Ayusos` 
+                                        } else {
+                                           return `0.${str_x} Ayusos`
+                                        }
+                              }).catch( () => { return "No se puede leer balance" })
          console.log("getSaldoTokens")
          console.log(saldo)
          status.token_saldo = saldo
+      },
+
+      claimTokens: async function() {
+         console.log("ClaimTokens")
+         const myaddr = status.ethAddress
+         var claimedAmount = await contracts.faucet.methods.ClaimedAmount(myaddr).call()
+
+         console.log(`Alreadyclaimed => ${claimedAmount} `)
+
+         if (claimedAmount == 0) {
+            console.log(`Start claiming..${status.ethAddress}`)
+            var tx = await contracts.faucet.methods.Claim(status.ethAddress).send({from: myaddr}).then(
+               async tx => {
+
+                  status.token_saldo = await contracts.token.methods.balanceOf(myaddr).call()
+                  window.alert(tx)
+                  return tx
+               }).catch( function(err) {
+
+                  window.alert(err)
+                  return err
+               });
+            console.log(`Claim returns -> ${tx}`)
+         }
       }
    }
 }
