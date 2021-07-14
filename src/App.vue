@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Walletconnect eth_addr="0x0000000000000000"/>
     <LandingPage/>
+    <Walletconnect eth_addr="0x0000000000000000"/>
   </div>
 </template>
 
