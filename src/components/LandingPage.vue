@@ -1,32 +1,10 @@
 <template>
+<div>
+  <img src="images/ayusocoin_icon.svg">
+  <h1>A¥USOCoin</h1>
+  <p class="lead">{{ una_moneda }} para que nuestros políticos aprendan qué son las criptomonedas y los contratos inteligentes.</p>
+ </div> 
 
-<div class="landing">
-
-  <div class="heading">
-
-    <h1>Ayuso Coin</h1>
-    <p>{{ una_moneda }} para que nuestros políticos aprendan qué son las criptomonedas.</p> 
-
-  </div>
-  
-  <div class="faq">
-    <h1>¿Qué es?</h1>
-    <p>
-      AyusoCoin es un <em>token erc20</em> que está en la red Ethereum.
-      En la red Ethereum todo se desarrolla mediante <em>contratos inteligentes</em>, es decir pequeños programas que se ejecutan en la propia red.
-      Hacer cambios en los datos que almacena la red tiene un coste, y ese coste se paga con la criptomoneda Ethereum.
-      Ayusocoin es un contrato inteligente ({{contract_address}}) que implementa un token (una ficha como las que se usaban antiguamente en las cabinas telefónicas).
-      
-    </p>
-
-    <h1>¿Cómo conseguirla</h1>
-
-
-    <h1>¿Qué limites tiene</h1>
-    <p> </p>
-
-  </div>
-</div>
 </template>
 
 <script>
