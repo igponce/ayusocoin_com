@@ -1,21 +1,34 @@
 <template>
   <div class="walletconnect">
 
-     <!-- El navegador no soporta ethereum (metamask, etc) -->
+    <span v-show="isWalletConnected">
+       <p>Conectado</p>
+       <h3>Conectado:</h3>
+       <p> {{ displayEthAddress }} (see in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
+    </span>
 
-     <span v-show="!isEthereumEnabled">
-        <li class="warning"></li>
-        <p>Este navegador no soporta Ethereum. Instala <em>plugin</em>&nbsp;<a href="https://metamask.io">Metamask</a>para activarlo.</p>
+   <div class="saldo">
+      SALDO:  {{ token_saldo }} 
+      <button v-on:click="getSaldoTokens">Leer saldo</button>
+   </div>
+
+     <span v-show="wizardStage== 'start'">
+       <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
-     <!-- si no estamos conectados a ningun wallet -->
 
-     <span v-show="isWalletConnected"> <p>Conectado</p>
-        <h3>Conectado:</h3> {{ displayEthAddress }} (see in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)
+     <!-- stage2 - conectar el wallet -->
 
-      <div class="saldo">
-         SALDO:  {{ token_saldo }} 
-         <button v-on:click="getSaldoTokens">Leer saldo</button>
-      </div>
+     <!-- El navegador no soporta ethereum (metamask, etc) -->
+     <span v-show="wizardStage == 'connect_wallet'">
+         <span v-show="!isEthereumEnabled">
+            <li class="warning"></li>
+            <p>Este navegador no soporta Ethereum.</p>
+            <p>Utiliza un nagegador que lo soporte, o instala un plugin como <a href="https://metamask.io">Metamask</a>para activarlo.</p>
+         </span>
+     </span>
+
+     <!-- stage3 - Comprobar si se ha -->
+
 
       <div class="faucet">
          <span v-if="isClaimed">
@@ -26,7 +39,6 @@
          <button v-on:click="claimTokens">Reclamar</button> 
          </span>
       </div>
-     </span>
 
      <span v-show="!isWalletConnected">
         <button v-on:click="conectarWalletEthereum">Conectar con Wallet Ethereum</button>
@@ -58,8 +70,9 @@ var contracts = {
 }
 
 var status = {
-     isEthereumEnabled: 0,
-     isWalletConnected: 0,
+     wizardStage: 'start', 
+     isEthereumEnabled: false,
+     isWalletConnected: false,
      ethAddress: "None",
      displayEthAddress: "No conectado",
      isClaimed: false,
@@ -132,6 +145,10 @@ export default {
                });
             console.log(`Claim returns -> ${tx}`)
          }
+      },
+
+      setWizardStage: function(new_stage) {
+         status.wizardStage = new_stage
       }
    }
 }
