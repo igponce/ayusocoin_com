@@ -1,7 +1,7 @@
 <template>
   <div class="walletconnect">
 
-     <span v-show="wizardStage== 'start'">
+     <span v-show="wizardStage == wizardStages[0]">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
 
@@ -33,6 +33,7 @@
       </div>
 
      <span v-show="!isWalletConnected">
+        <p>Antes de conseguir tus A¥USOs, tienes que conectar una <em>Wallet</em> donde vas los vas a guardar.</p>
         <button v-on:click="conectarWalletEthereum">Conectar con Wallet Ethereum</button>
      </span>
 
@@ -40,7 +41,10 @@
      <span>
      </span>
 
-     <pre>
+   <!-- Footer: debug -->
+   <pre v-show="debug == 1">
+ 
+   wizardStages -> {{ wizardStages }}
    wizardStage -> {{ wizardStage }}
    isEthereumEnabled -> {{ isEthereumEnabled }}
    isWalletConnected -> {{ isWalletConnected }}
@@ -79,15 +83,16 @@ var contracts = {
    faucet: undefined
 }
 
-var wizardStages = ['start',            // Inicio
-                    'connect-wallet',   // Conectarse a wallet
-                    'pre-claim',        // Wallet conectada - texto legal
-                    'claim',            // Solicitar tokens
-                    'claimed'           // Ya solicitados
-                   ]
-
+const wizardStages = ['start',            // Inicio
+                      'connect-wallet',   // Conectarse a wallet
+                      'pre-claim',        // Wallet conectada - texto legal
+                      'claim',            // Solicitar tokens
+                      'claimed'           // Ya solicitados
+                     ]
 
 var status = {
+     debug: true,
+     wizardStages: wizardStages,
      wizardStage: wizardStages[0], // 'start'
      isEthereumEnabled: false,
      isWalletConnected: false,
