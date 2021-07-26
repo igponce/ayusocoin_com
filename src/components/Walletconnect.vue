@@ -1,17 +1,6 @@
 <template>
   <div class="walletconnect">
 
-    <span v-show="isWalletConnected">
-       <p>Conectado</p>
-       <h3>Conectado:</h3>
-       <p> {{ displayEthAddress }} (see in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
-    </span>
-
-   <div class="saldo">
-      SALDO:  {{ token_saldo }} 
-      <button v-on:click="getSaldoTokens">Leer saldo</button>
-   </div>
-
      <span v-show="wizardStage== 'start'">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
@@ -27,28 +16,49 @@
          </span>
      </span>
 
-     <!-- stage3 - Comprobar si se ha -->
+     <!-- stage3 - Comprobar si se ha reclamado los ayusos -->
 
 
       <div class="faucet">
          <span v-if="isClaimed">
-         Ya se han reclamado los Ayusos que correspondían a esta cuenta.
+            Ya se han reclamado los Ayusos que correspondían a esta cuenta.
          </span>
 
          <span v-if="!isClaimed">
-         <button v-on:click="claimTokens">Reclamar</button> 
+           
+
+            <button v-on:click="claimTokens">Obtener A¥USOS</button> 
          </span>
+
       </div>
 
      <span v-show="!isWalletConnected">
         <button v-on:click="conectarWalletEthereum">Conectar con Wallet Ethereum</button>
      </span>
 
+     <!-- Pie: se muestra cuando estamos conectados -->
+     <span>
+     </span>
+
      <pre>
+   wizardStage -> {{ wizardStage }}
    isEthereumEnabled -> {{ isEthereumEnabled }}
    isWalletConnected -> {{ isWalletConnected }}
    ethAddress -> {{ displayEthAddress }}
     </pre>
+
+    <span v-show="isWalletConnected">
+       <p>Conectado</p>
+       <h3>Conectado:</h3>
+       <p> {{ displayEthAddress }} (see in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
+
+       <div class="saldo">
+          SALDO:  {{ token_saldo }} A¥USOs
+          <button v-on:click="getSaldoTokens">Leer saldo</button> <!-- tiene que ser automatico sin clic -->
+       </div>
+
+    </span>
+
 
   </div>
 </template>
@@ -69,8 +79,16 @@ var contracts = {
    faucet: undefined
 }
 
+var wizardStages = ['start',            // Inicio
+                    'connect-wallet',   // Conectarse a wallet
+                    'pre-claim',        // Wallet conectada - texto legal
+                    'claim',            // Solicitar tokens
+                    'claimed'           // Ya solicitados
+                   ]
+
+
 var status = {
-     wizardStage: 'start', 
+     wizardStage: wizardStages[0], // 'start'
      isEthereumEnabled: false,
      isWalletConnected: false,
      ethAddress: "None",
