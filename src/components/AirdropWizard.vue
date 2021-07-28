@@ -1,55 +1,65 @@
 <template>
   <div class="airdropwizard">
 
+     <!-- stage0 - Botón de quiero mis ayusos -->
+
      <span v-show="wizardStage == wizardStages[0]">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
 
-     <!-- stage2 - conectar el wallet -->
+     <!-- stage1 - conectar el wallet -->
 
      <!-- El navegador no soporta ethereum (metamask, etc) -->
-     <span v-show="wizardStage == 'connect_wallet'">
+     <div v-show="wizardStage == 'connect_wallet'" class="wizard">
          <span v-show="!isEthereumEnabled">
             <li class="warning"></li>
             <p>Este navegador no soporta Ethereum.</p>
             <p>Utiliza un nagegador que lo soporte, o instala un plugin como <a href="https://metamask.io">Metamask</a>para activarlo.</p>
          </span>
-     </span>
+
+        <span v-show="!isWalletConnected">
+           <h2>Hola</h2>
+           <p>Antes de conseguir tus A¥USOs, tienes que conectar una <em>Wallet</em> donde vas los vas a guardar.</p>
+           <a href="#connectWallet" v-on:click="conectarWalletEthereum" class="btn btn-outline btn-outline-lg outline-dark">Conectar con Wallet Ethereum</a>
+        </span>
+     </div>
+
+     <!-- stage2 - Texto legal y mucho cuidadín a tener -->
+
+     <div v-show="wizardStage == 'pre-claim'" class="wizard">
+        <h3>¡¡¡ Aviso !!!</h3>
+        <p>Al dar al botón de "solicitar mis ayusos", ocurrira esto:</p>
+           <ol>
+              <li>Ejecutarás una transacción en el <a href="https://es.wikipedia.com/wiki/Ethereum">blockchain de Ethereum</a></li>
+              <li>La transacción en el blockchain será pública. No se podrá borrar. Nunca.</li>.
+              <li>Cualquiera podrá consultar tus saldos presentes, pasados, y futuros de la criptomoneda Ethereum y cualquier otro token que guardes en la dirección con la que te has conectado {{displayEthAddress}}</li>
+          </ol>
+
+       <h3>Si no te sientes cómodo/a con esto cierra esta página.</h3>
+
+
+       <a href="#getToken" v-on:click="setWizardStage('claim')" class="btn btn-outline btn-outline-lg outline-dark">Lo he entendido y estoy conforme</a>
+     </div>
 
      <!-- stage3 - Comprobar si se ha reclamado los ayusos -->
 
 
-      <div class="faucet">
+      <div class="faucet wizard" v-show="wizardStage=='claim'">
          <span v-if="isClaimed">
             Ya se han reclamado los Ayusos que correspondían a esta cuenta.
          </span>
 
          <span v-if="!isClaimed">
-           
+            <p>Puedes conseguir tus A¥USOS haciendo clic en el botón de más abajo.</p>
+           <a href="#getToken" v-on:click="claimTokens" class="btn btn-outline btn-outline-lg outline-dark">Quiero mis A¥USOS</a>
 
-            <button v-on:click="claimTokens">Obtener A¥USOS</button> 
          </span>
 
       </div>
 
-     <span v-show="!isWalletConnected">
-        <p>Antes de conseguir tus A¥USOs, tienes que conectar una <em>Wallet</em> donde vas los vas a guardar.</p>
-        <button v-on:click="conectarWalletEthereum">Conectar con Wallet Ethereum</button>
-     </span>
 
      <!-- Pie: se muestra cuando estamos conectados -->
-     <span>
-     </span>
 
-   <!-- Footer: debug -->
-   <pre v-show="debug == 1">
- 
-   wizardStages -> {{ wizardStages }}
-   wizardStage -> {{ wizardStage }}
-   isEthereumEnabled -> {{ isEthereumEnabled }}
-   isWalletConnected -> {{ isWalletConnected }}
-   ethAddress -> {{ displayEthAddress }}
-    </pre>
 
     <span v-show="isWalletConnected">
        <p>Conectado</p>
@@ -60,6 +70,16 @@
           SALDO:  {{ token_saldo }} A¥USOs
           <button v-on:click="getSaldoTokens">Leer saldo</button> <!-- tiene que ser automatico sin clic -->
        </div>
+
+   <!-- Footer: debug -->
+   <pre v-show="debug == 1">
+ 
+   wizardStages -> {{ wizardStages }}
+   wizardStage -> {{ wizardStage }}
+   isEthereumEnabled -> {{ isEthereumEnabled }}
+   isWalletConnected -> {{ isWalletConnected }}
+   ethAddress -> {{ displayEthAddress }}
+    </pre>
 
     </span>
 
@@ -106,7 +126,7 @@ var status = {
 };
 
 export default {
-  name: 'Walletconnect',
+  name: 'AirdropWizard',
   props: {
     msg: String,
     eth_addr: String
@@ -127,9 +147,11 @@ export default {
             contracts = await setupDapp() // ToDO error check
             await this.getSaldoTokens()
             window.contracts = contracts // para debg
+            status.wizardStage = 'pre-claim'
             return true;   
          } 
          status.isWalletConnected = false;
+         status.wizardStage = 'error-wallet'
          return false;
       },
 
@@ -179,7 +201,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.walletconnect {
+.wizard {
    background: lightskyblue;
    border-radius: 1em;
 }
