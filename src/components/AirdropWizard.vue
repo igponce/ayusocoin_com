@@ -1,5 +1,5 @@
 <template>
-  <div class="walletconnect">
+  <div class="airdropwizard">
 
      <span v-show="wizardStage == wizardStages[0]">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>

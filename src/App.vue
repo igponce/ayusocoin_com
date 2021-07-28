@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <LandingPage/>
-    <Walletconnect eth_addr="0x0000000000000000"/>
+    <AirdropWizard eth_addr="0x0000000000000000"/>
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import Walletconnect from './components/Walletconnect.vue'
+import AirdropWizard from './components/AirdropWizard.vue'
 import LandingPage from './components/LandingPage.vue'
 require ('./assets/app.css')
 
@@ -15,7 +15,7 @@ export default {
   name: 'App',
   components: {
     // HelloWorld, 
-    Walletconnect,
+    AirdropWizard,
     LandingPage
   }
 }
