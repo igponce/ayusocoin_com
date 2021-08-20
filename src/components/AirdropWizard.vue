@@ -3,21 +3,22 @@
 
      <!-- stage0 - Botón de quiero mis ayusos -->
 
-     <span v-show="wizardStage == wizardStages[0]">
+     <span v-show="wizardStage == wizardStages[0]" key="wizard">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
 
      <!-- stage1 - conectar el wallet -->
 
      <!-- El navegador no soporta ethereum (metamask, etc) -->
-     <div v-show="wizardStage == 'connect_wallet'" class="wizard">
+     <div v-show="wizardStage == 'connect_wallet'" class="wizard" key="wizard">
          <span v-show="!isEthereumEnabled">
             <li class="warning"></li>
+            <h3>:-(</h3>
             <p>Este navegador no soporta Ethereum.</p>
-            <p>Utiliza un nagegador que lo soporte, o instala un plugin como <a href="https://metamask.io">Metamask</a>para activarlo.</p>
+            <p>Para conseguir tus A¥USOs tienes que usar un navegador que soporte Ethereum, o instalar en tu navegador un plugin como <a href="https://metamask.io">Metamask</a>para activarlo.</p>
          </span>
 
-        <span v-show="!isWalletConnected">
+        <span v-show="isEthereumEnabled && !isWalletConnected" key="wizard">
            <h2>Hola</h2>
            <p>Antes de conseguir tus A¥USOs, tienes que conectar una <em>Wallet</em> donde vas los vas a guardar.</p>
            <a href="#connectWallet" v-on:click="conectarWalletEthereum" class="btn btn-outline btn-outline-lg outline-dark">Conectar con Wallet Ethereum</a>
@@ -26,16 +27,18 @@
 
      <!-- stage2 - Texto legal y mucho cuidadín a tener -->
 
-     <div v-show="wizardStage == 'pre-claim'" class="wizard">
+     <div v-show="wizardStage == 'pre-claim'" class="wizard" key="wizard">
         <h3>¡¡¡ Aviso !!!</h3>
-        <p>Al dar al botón de "solicitar mis ayusos", ocurrira esto:</p>
+        <p>En esta web no se almacena ninguna información. Ni siquiera cookies.</p>
+
+        <p>*Pero* al clicar en al botón de "solicitar mis ayusos", ocurrira esto:</p>
            <ol>
               <li>Ejecutarás una transacción en el <a href="https://es.wikipedia.com/wiki/Ethereum">blockchain de Ethereum</a></li>
-              <li>La transacción en el blockchain será pública. No se podrá borrar. Nunca.</li>.
+              <li>La transacción en el blockchain será pública. Nadia la podrá borrar. Nunca.</li>.
               <li>Cualquiera podrá consultar tus saldos presentes, pasados, y futuros de la criptomoneda Ethereum y cualquier otro token que guardes en la dirección con la que te has conectado {{displayEthAddress}}</li>
           </ol>
 
-       <h3>Si no te sientes cómodo/a con esto cierra esta página.</h3>
+       <h3>Si no te sientes cómodo/a con esto, o tienes dudas, cierra esta página y no sigas.</h3>
 
 
        <a href="#getToken" v-on:click="setWizardStage('claim')" class="btn btn-outline btn-outline-lg outline-dark">Lo he entendido y estoy conforme</a>
@@ -44,7 +47,7 @@
      <!-- stage3 - Comprobar si se ha reclamado los ayusos -->
 
 
-      <div class="faucet wizard" v-show="wizardStage=='claim'">
+      <div class="faucet wizard" v-show="wizardStage=='claim'" key="wizard">
          <span v-if="isClaimed">
             Ya se han reclamado los Ayusos que correspondían a esta cuenta.
          </span>
@@ -54,6 +57,7 @@
            <a href="#getToken" v-on:click="claimTokens" class="btn btn-outline btn-outline-lg outline-dark">Quiero mis A¥USOS</a>
 
          </span>
+    
 
       </div>
 
@@ -62,13 +66,11 @@
 
 
     <span v-show="isWalletConnected">
-       <p>Conectado</p>
-       <h3>Conectado:</h3>
-       <p> {{ displayEthAddress }} (see in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
+       <p>Conectado a {{ displayEthAddress }} (ver in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
 
        <div class="saldo">
-          SALDO:  {{ token_saldo }} A¥USOs
-          <button v-on:click="getSaldoTokens">Leer saldo</button> <!-- tiene que ser automatico sin clic -->
+          Tienes {{ token_saldo }} A¥USOs
+          <button v-on:click="getSaldoTokens">Volver a leer saldo</button> <!-- tiene que ser automatico sin clic -->
        </div>
 
    <!-- Footer: debug -->
