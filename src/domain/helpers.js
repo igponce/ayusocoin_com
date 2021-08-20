@@ -61,14 +61,14 @@ async function connectToEthereum() {
     return retval   ;
 }
 
-async function setupDapp() {
+async function setupDapp(token_addr, faucet_addr) {
     
     if (window.ethereum) {
         console.log("setupDapp() - entrando")
         console.log(window.web3)
         window.erc20 = ERC20ABI
-        const token = new window.web3.eth.Contract(ERC20ABI, '0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87')
-        const faucet = new window.web3.eth.Contract(FaucetABI,'0x602C71e4DAC47a042Ee7f46E0aee17F94A3bA0B6')
+        const token = new window.web3.eth.Contract(ERC20ABI, token_addr)
+        const faucet = new window.web3.eth.Contract(FaucetABI, faucet_addr)
         console.log("TOKEN: ", token)
         console.log("FAUCET: ",faucet)
         return {
