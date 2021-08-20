@@ -1,21 +1,20 @@
 <template>
   <div id="app">
     <LandingPage/>
-    <AirdropWizard eth_addr="0x0000000000000000"/>
+    <Airdrop eth_addr="0x0000000000000000"/>
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import AirdropWizard from './components/AirdropWizard.vue'
+require ('./assets/app.css');
 import LandingPage from './components/LandingPage.vue'
-require ('./assets/app.css')
-
+import Airdrop from './components/AirdropWizard.vue'
+  
 export default {
   name: 'App',
   components: {
     // HelloWorld, 
-    AirdropWizard,
+    Airdrop,
     LandingPage
   }
 }
