@@ -94,8 +94,8 @@ import {connectToEthereum, Dapp, setupDapp, formateaToken } from '../domain/help
 
 // Las direcciones de los contratos deberían estar en un fichero aparte
 var dapp = new Dapp(
-  '0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87', // Token Address
-  '0x602C71e4DAC47a042Ee7f46E0aee17F94A3bA0B6'  // Faucet contract address
+  '0xa745005a2764ccbfeb1a8c6fca178f896af5d777', // Token Address
+  '0x0b70A904C77b90eBa8c3619dbE810669c193917d'  // Faucet contract address
 )
 
 var contracts = {
@@ -144,7 +144,7 @@ export default {
             for (const [k,v] of Object.entries(new_status)) {
                status[k] = v
             }
-            contracts = await setupDapp() // ToDO error check
+            contracts = await setupDapp(status.dapp.token_address, status.dapp.faucet_address) // ToDO error check
             await this.getSaldoTokens()
             window.contracts = contracts // para debg
             status.wizardStage = 'pre-claim'
