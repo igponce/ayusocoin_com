@@ -57,7 +57,15 @@
            <a href="#getToken" v-on:click="claimTokens" class="btn btn-outline btn-outline-lg outline-dark">Quiero mis A¥USOS</a>
 
          </span>
-    
+      </div>
+
+      <div class="postclaim wizard" v-show="wizardStage=='post-claim'" key="wizard">
+
+         <h3>:-)</h3>
+
+         <p>Acabas de solicitar tus A¥USOS.</p>
+         <p>Puede que la transacción tarde unos minutos en completarse y quede grabada en el blockchain.</p>
+         <p>Puedes consultar la actividad de tu wallet en <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>:</p>
 
       </div>
 
@@ -66,11 +74,15 @@
 
 
     <span v-show="isWalletConnected">
-       <p>Conectado a {{ displayEthAddress }} (ver in <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
+       <p>Conectado a {{ displayEthAddress }} (ver en <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
 
        <div class="saldo">
           Tienes {{ token_saldo }} A¥USOs
-          <button v-on:click="getSaldoTokens">Volver a leer saldo</button> <!-- tiene que ser automatico sin clic -->
+          <!--
+             Parece que no tiene mucho sentido en un gui
+             <button v-on:click="getSaldoTokens">Volver a leer saldo</button>
+          -->
+
        </div>
 
    <!-- Footer: debug -->
@@ -105,15 +117,18 @@ var contracts = {
    faucet: undefined
 }
 
+// Para tener todas las fases a la vista
 const wizardStages = ['start',            // Inicio
                       'connect-wallet',   // Conectarse a wallet
                       'pre-claim',        // Wallet conectada - texto legal
                       'claim',            // Solicitar tokens
-                      'claimed'           // Ya solicitados
+                      'claimed',          // Ya solicitados previamente
+                      'post-claim',       // Fin de proceso solicitud
+                      'error-wallet'      // Problema al conectar con ethereum
                      ]
 
 var status = {
-     debug: true,
+     debug: false,
      wizardStages: wizardStages,
      wizardStage: wizardStages[0], // 'start'
      isEthereumEnabled: false,
@@ -124,6 +139,7 @@ var status = {
      token_saldo: "0",
      faucet_canclaim: 0,
      web3: null,
+     tx: null, // Para comprobar en otro momento el estado
      dapp: dapp
 };
 
@@ -167,11 +183,11 @@ export default {
          var saldo = await token.methods.balanceOf(status.ethAddress).call()
                               .then( x => formateaToken(x) )
                               .catch( () => { return "No se puede leer balance" })
+
          status.token_saldo = saldo
       },
 
       claimTokens: async function() {
-         console.log("ClaimTokens")
          const myaddr = status.ethAddress
          var claimedAmount = await contracts.faucet.methods.ClaimedAmount(myaddr).call()
 
@@ -181,20 +197,19 @@ export default {
             console.log(`Start claiming..${status.ethAddress}`)
             var tx = await contracts.faucet.methods.Claim(status.ethAddress).send({from: myaddr}).then(
                async tx => {
-
                   status.token_saldo = await contracts.token.methods.balanceOf(myaddr).call()
-                  window.alert(tx)
-                  return tx
+                  status.tx = tx
+                  status.wizardStage = 'post-claim'
                }).catch( function(err) {
-
                   window.alert(err)
                   return err
                });
-            console.log(`Claim returns -> ${tx}`)
+            console.log(`Claim transaction ${tx}`)
          }
       },
 
       setWizardStage: function(new_stage) {
+         // ToDo: comprobar que la fase estaba registrada antes
          status.wizardStage = new_stage
       }
    }
