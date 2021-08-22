@@ -176,9 +176,6 @@ export default {
       getSaldoTokens: async function() {
 
          const token = contracts.token
-
-         console.log("getSaldoTokens")
-         console.log(contracts)
          
          var saldo = await token.methods.balanceOf(status.ethAddress).call()
                               .then( x => formateaToken(x) )
@@ -191,10 +188,7 @@ export default {
          const myaddr = status.ethAddress
          var claimedAmount = await contracts.faucet.methods.ClaimedAmount(myaddr).call()
 
-         console.log(`Alreadyclaimed => ${claimedAmount} `)
-
          if (claimedAmount == 0) {
-            console.log(`Start claiming..${status.ethAddress}`)
             var tx = await contracts.faucet.methods.Claim(status.ethAddress).send({from: myaddr}).then(
                async tx => {
                   status.token_saldo = await contracts.token.methods.balanceOf(myaddr).call()
@@ -204,7 +198,7 @@ export default {
                   window.alert(err)
                   return err
                });
-            console.log(`Claim transaction ${tx}`)
+            return tx   
          }
       },
 

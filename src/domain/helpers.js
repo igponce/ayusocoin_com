@@ -12,14 +12,11 @@ export { Dapp, connectToEthereum, setupDapp, formateaToken }
 
 function formateaToken (x) {
     const str_x = String(x)
-    console.log(x, str_x)
     var enteros
     var decimales
     if(str_x.length > 6) {
-       console.log("aki")
        enteros = str_x.slice(0,-6)
        decimales = str_x.slice(enteros.length)
-       console.log(enteros, decimales)
     } else {
        enteros = "0"
        decimales = str_x.padStart(6,"0")
@@ -38,11 +35,9 @@ async function connectToEthereum() {
     }
 
     if (window.ethereum != undefined) {   
-        console.log("PRE RESULT " + retval)
         var acc = await window.ethereum.request(
             {method:'eth_requestAccounts'}).then(
                 result => {
-                    console.log("Conectada dirección Ethereum: " + acc)
                     retval.isEthereumEnabled = true
                     retval.isWalletConnected = true
                     retval.dis
@@ -55,22 +50,15 @@ async function connectToEthereum() {
 
     }
 
-    console.log("POST_RESULT")
-    console.log(retval)
-
     return retval   ;
 }
 
 async function setupDapp(token_addr, faucet_addr) {
     
     if (window.ethereum) {
-        console.log("setupDapp() - entrando")
-        console.log(window.web3)
         window.erc20 = ERC20ABI
         const token = new window.web3.eth.Contract(ERC20ABI, token_addr)
         const faucet = new window.web3.eth.Contract(FaucetABI, faucet_addr)
-        console.log("TOKEN: ", token)
-        console.log("FAUCET: ",faucet)
         return {
             token: token,
             faucet: faucet
@@ -102,15 +90,11 @@ class Dapp {
 
     LoadContracts = async function(web3) {
         if (!web3) {
-            console.log("WEB3 undefined")
             return undefined; //
         }
         
-        console.log("LOAD CONTRACTS")
         this.token_contract = await web3.eth.Contract(this.token_abi, this.token_address);
-        console.log(this.token_contract);
         this.faucet_contract = await web3.eth.Contract(this.faucet_abi, this.faucet_address);
-        console.log(this.faucet_contract);
         
     }
 
