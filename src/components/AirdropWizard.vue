@@ -53,9 +53,9 @@
          </span>
 
          <span v-if="!isClaimed">
-            <p>Puedes conseguir tus A¥USOS haciendo clic en el botón de más abajo.</p>
-           <a href="#getToken" v-on:click="claimTokens" class="btn btn-outline btn-outline-lg outline-dark">Quiero mis A¥USOS</a>
-
+            <p>Puedes conseguir 1000 A¥USOS haciendo clic en el botón de más abajo.</p>
+            <a href="#getToken" v-on:click="claimTokens" class="btn btn-outline btn-outline-lg outline-dark">Dame 1000 A¥USOS</a>
+            <p>(esto sólo se pede hacer una vez).</p>
          </span>
       </div>
 
@@ -96,7 +96,6 @@
     </pre>
 
     </span>
-
 
   </div>
 </template>
