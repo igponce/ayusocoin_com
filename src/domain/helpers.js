@@ -14,12 +14,12 @@ function formateaToken (x) {
     const str_x = String(x)
     var enteros
     var decimales
-    if(str_x.length > 6) {
-       enteros = str_x.slice(0,-6)
+    if(str_x.length > 7) {
+       enteros = str_x.slice(0,-7)
        decimales = str_x.slice(enteros.length)
     } else {
        enteros = "0"
-       decimales = str_x.padStart(6,"0")
+       decimales = str_x.padStart(7,"0")
     }
 
     const token_symbol = Number(enteros) == 1 ? "A¥USO" : "A¥USOS"
