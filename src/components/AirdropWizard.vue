@@ -20,7 +20,7 @@
 
         <span v-show="isEthereumEnabled && !isWalletConnected" key="wizard">
            <h2>Hola</h2>
-           <p>Antes de conseguir tus A¥USOs, tienes que conectar una <em>Wallet</em> donde vas los vas a guardar.</p>
+           <p>Antes de conseguir tus A¥usoCoins, tienes que conectar una <em>Wallet</em> donde los vas a guardar.</p>
            <a href="#connectWallet" v-on:click="conectarWalletEthereum" class="btn btn-outline btn-outline-lg outline-dark">Conectar con Wallet Ethereum</a>
         </span>
      </div>
@@ -31,11 +31,11 @@
         <h3>¡¡¡ Aviso !!!</h3>
         <p>En esta web no se almacena ninguna información. Ni siquiera cookies.</p>
 
-        <p>*Pero* al clicar en al botón de "solicitar mis ayusos", ocurrira esto:</p>
+        <p>*Pero* al clicar en el botón de "solicitar mis A¥USOs", ocurrirá esto:</p>
            <ol>
               <li>Ejecutarás una transacción en el <a href="https://es.wikipedia.com/wiki/Ethereum">blockchain de Ethereum</a></li>
-              <li>La transacción en el blockchain será pública. Nadia la podrá borrar. Nunca.</li>.
-              <li>Cualquiera podrá consultar tus saldos presentes, pasados, y futuros de la criptomoneda Ethereum y cualquier otro token que guardes en la dirección con la que te has conectado {{displayEthAddress}}</li>
+              <li>La transacción en el blockchain será pública. Nadie la podrá borrar. Nunca. No aparecerá tu nombre o teléfono; sino el código que identifica tu monedero virtual (wallet).</li>.
+              <li>Cualquiera podrá consultar tus saldos presentes, pasados, y futuros de la criptomoneda Ethereum y cualquier otra moneda virtual que guardes en la wallet con la que te has conectado (que es {{displayEthAddress}})</li>
           </ol>
 
        <h3>Si no te sientes cómodo/a con esto, o tienes dudas, cierra esta página y no sigas.</h3>
@@ -49,13 +49,13 @@
 
       <div class="faucet wizard" v-show="wizardStage=='claim'" key="wizard">
          <span v-if="isClaimed">
-            Ya se han reclamado los Ayusos que correspondían a esta cuenta.
+            Ya se han reclamado los Ayusos que corresponden a este wallet.
          </span>
 
          <span v-if="!isClaimed">
             <p>Puedes conseguir 1000 A¥USOS haciendo clic en el botón de más abajo.</p>
+            <p>(Esto sólo se puede hacer una vez).</p>
             <a href="#getToken" v-on:click="claimTokens" class="btn btn-outline btn-outline-lg outline-dark">Dame 1000 A¥USOS</a>
-            <p>(esto sólo se pede hacer una vez).</p>
          </span>
       </div>
 
@@ -214,6 +214,14 @@ export default {
 .wizard {
    background: lightskyblue;
    border-radius: 1em;
+}
+
+.wizard a:visited {
+   color: #444;
+}
+
+.wizard a:after {
+
 }
 
 h3 {
