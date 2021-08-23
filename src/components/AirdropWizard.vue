@@ -77,7 +77,7 @@
        <p>Conectado a {{ displayEthAddress }} (ver en <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
 
        <div class="saldo">
-          Tienes {{ token_saldo }} A¥USOs
+          Tienes {{ token_saldo }}
           <!--
              Parece que no tiene mucho sentido en un gui
              <button v-on:click="getSaldoTokens">Volver a leer saldo</button>
