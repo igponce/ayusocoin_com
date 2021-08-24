@@ -3,14 +3,14 @@
 
      <!-- stage0 - Botón de quiero mis ayusos -->
 
-     <span v-show="wizardStage == wizardStages[0]" key="wizard">
+     <span v-show="wizardStage == wizardStages[0]">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
 
      <!-- stage1 - conectar el wallet -->
 
      <!-- El navegador no soporta ethereum (metamask, etc) -->
-     <div v-show="wizardStage == 'connect_wallet'" class="wizard" key="wizard">
+     <div v-show="wizardStage == 'connect_wallet'" class="wizard">
          <span v-show="!isEthereumEnabled">
             <li class="warning"></li>
             <h3>:-(</h3>
@@ -18,7 +18,7 @@
             <p>Para conseguir tus A¥USOs tienes que usar un navegador que soporte Ethereum, o instalar en tu navegador un plugin como <a href="https://metamask.io">Metamask</a>para activarlo.</p>
          </span>
 
-        <span v-show="isEthereumEnabled && !isWalletConnected" key="wizard">
+        <span v-show="isEthereumEnabled && !isWalletConnected">
            <h2>Hola</h2>
            <p>Antes de conseguir tus A¥usoCoins, tienes que conectar una <em>Wallet</em> donde los vas a guardar.</p>
            <a href="#connectWallet" v-on:click="conectarWalletEthereum" class="btn btn-outline btn-outline-lg outline-dark">Conectar con Wallet Ethereum</a>
@@ -27,7 +27,7 @@
 
      <!-- stage2 - Texto legal y mucho cuidadín a tener -->
 
-     <div v-show="wizardStage == 'pre-claim'" class="wizard" key="wizard">
+     <div v-show="wizardStage == 'pre-claim'" class="wizard">
         <h3>¡¡¡ Aviso !!!</h3>
         <p>En esta web no se almacena ninguna información. Ni siquiera cookies.</p>
 
@@ -47,7 +47,7 @@
      <!-- stage3 - Comprobar si se ha reclamado los ayusos -->
 
 
-      <div class="faucet wizard" v-show="wizardStage=='claim'" key="wizard">
+      <div class="faucet wizard" v-show="wizardStage=='claim'">
          <span v-if="isClaimed">
             Ya se han reclamado los Ayusos que corresponden a este wallet.
          </span>
@@ -59,7 +59,7 @@
          </span>
       </div>
 
-      <div class="postclaim wizard" v-show="wizardStage=='post-claim'" key="wizard">
+      <div class="postclaim wizard" v-show="wizardStage=='post-claim'">
 
          <h3>:-)</h3>
 
@@ -120,7 +120,7 @@ var contracts = {
 const wizardStages = ['start',            // Inicio
                       'connect-wallet',   // Conectarse a wallet
                       'pre-claim',        // Wallet conectada - texto legal
-                      'claim',            // Solicitar tokens
+                         'claim',            // Solicitar tokens
                       'claimed',          // Ya solicitados previamente
                       'post-claim',       // Fin de proceso solicitud
                       'error-wallet'      // Problema al conectar con ethereum
