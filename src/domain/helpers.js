@@ -98,6 +98,31 @@ class Dapp {
         
     }
 
+    // EIP747 
+    RegisterToken = async function(web3, tokenaddr, ticker, decimals, imageuri) {
+        // Registra el token en el wallet sin que lo tenga que hacer el usuario
+        web3.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20',
+              options: {
+                address: 'tokenaddr',
+                symbol: ticker,
+                decimals: decimals,
+                image: imageuri,
+              },
+            },
+          })
+            .then((success) => {
+              if (success) {
+                console.log( ticker + ' successfully added to wallet!')
+              } else {
+                throw new Error('Something went wrong.')
+              }
+            })
+            .catch(console.error)
+    }
+
     GetTokenAddress = function() {
         return this.token_address;
     }
