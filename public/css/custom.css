@@ -1,1 +1,16 @@
+
 /* Put your custom styles here */
+
+#glosario p {
+    text-decoration: none;
+    text-align: left;
+}
+
+#glosario blockquote {
+    border: 0;
+}
+
+#glosario h1,h2,h3,h4,h5 {
+    text-align: center;
+    text-transform: uppercase;
+}
