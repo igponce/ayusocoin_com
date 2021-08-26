@@ -7,7 +7,7 @@
 
 
          <a id="close_help" class="btn btn-outline btn-outline-lg outline-dark fa fa-close" v-on:click="toggle()"/>
-         <h2>Cómo adquirir tu AyusoCoin en 6 sencillos pasos</h2>
+         <h2>Cómo conseguir tu AyusoCoin en 6 sencillos pasos</h2>
 
          <p> Si nunca has entrado en el mundo de las criptomonedas, ésta es tu guía:</p>
 
