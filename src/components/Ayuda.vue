@@ -23,16 +23,16 @@
          obtener después tus AyusoCoin GRATIS.</li>
 
                <li>Una vez que tengas Ethereum, abre AyusoCoin.com desde el propio navegador de tu
-         monedero virtual. Después haz clic sobre “quiero mis AYUSOS”.</li>
+         monedero virtual. Después haz clic sobre “quiero mis A¥USOS”.</li>
 
-               <li>Ahí verás que en AYusoCoin no almacenamos ninguna cookie, ningún dato personal
+               <li>Ahí verás que en A¥usoCoin no almacenamos ninguna cookie, ningún dato personal
          tuyo. Eso sí, la red virtual en la que funcionan las criptomonedas, llamada blockchain,
          registrará tus transacciones. Serán públicas y no se podrán borrar. Nunca. Pero no
          saldrá tu nombre, sino el código que identifica tu wallet.</li>
 
                <li>Si quieres seguir adelante, haz clic sobre “Lo he entendido y estoy conforme”.</li>
 
-               <li>Por fin conseguirás 1.000 AYusos. ¡ENHORABUENA!</li>
+               <li>Por fin conseguirás 1.000 A¥USOS. ¡ENHORABUENA!</li>
             </ol>
          </p>
          <p>
