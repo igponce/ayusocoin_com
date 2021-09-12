@@ -18,11 +18,23 @@
             <p>Para conseguir tus A¥USOs tienes que usar un navegador que soporte Ethereum, o instalar en tu navegador un plugin como <a href="https://metamask.io">Metamask</a>para activarlo.</p>
          </span>
 
+
+
         <span v-show="isEthereumEnabled && !isWalletConnected">
            <h2>Hola</h2>
            <p>Antes de conseguir tus A¥usoCoins, tienes que conectar una <em>Wallet</em> donde los vas a guardar.</p>
            <a href="#connectWallet" v-on:click="conectarWalletEthereum" class="btn btn-outline btn-outline-lg outline-dark">Conectar con Wallet Ethereum</a>
         </span>
+     </div>
+
+     <!-- error-wallet -->
+
+     <div v-show="wizardStage == 'error-wallet'" class="wizard">
+         <span>
+            <h3>:-(</h3>
+            <p>Opps! El saldo de la dirección {{displayEthAddress}} es 0.</p>
+            <p>AyusoCoin se distribuye sin ánimo de lucro. Sin embargo, necesitas tener Ethereum en tu wallet para pagar las comisiones que se llevan los <em>mineros</em> la red Ethereum.</p>
+         </span>
      </div>
 
      <!-- stage2 - Texto legal y mucho cuidadín a tener -->
@@ -135,6 +147,7 @@ var status = {
      ethAddress: "None",
      displayEthAddress: "No conectado",
      isClaimed: false,
+     eth_saldo: 0,
      token_saldo: "0",
      faucet_canclaim: 0,
      web3: null,
@@ -156,6 +169,12 @@ export default {
   },
   methods: {
      conectarWalletEthereum : async function() {
+
+         status.isWalletConnected = false;
+         status.web3 = window.web3;
+
+         console.log("conectarWalletEthereum")
+
          if (status.isEthereumEnabled) { 
             var new_status = await connectToEthereum()
             for (const [k,v] of Object.entries(new_status)) {
@@ -163,11 +182,23 @@ export default {
             }
             contracts = await setupDapp(status.dapp.token_address, status.dapp.faucet_address) // ToDO error check
             await this.getSaldoTokens()
-            window.contracts = contracts // para debg
-            status.wizardStage = 'pre-claim'
-            return true;   
+            this.balance = await status.web3.eth.getBalance(status.ethAddress).then(x => { return x } )
+
+            console.log("BALANCE ES: " + this.balance)
+
+            window.alert("balance 0 - por aki")
+
+            if (this.balance == "0") {
+               window.alert("balance 0 - por aki")
+               status.isWalletConnected == true
+               status.wizardStage = 'error-wallet'
+               return false;
+            } else {
+               window.contracts = contracts // para debg
+               status.wizardStage = 'pre-claim'
+               return true;   
+            }
          } 
-         status.isWalletConnected = false;
          status.wizardStage = 'error-wallet'
          return false;
       },
