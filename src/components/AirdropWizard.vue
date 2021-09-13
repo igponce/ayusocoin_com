@@ -92,6 +92,7 @@
 
      <!-- Pie: se muestra cuando estamos conectados -->
 
+     <span id=#flash v-show="flash"> {{flash}} </span>
 
     <span v-show="isWalletConnected">
        <p>Conectado a {{ displayEthAddress }} (ver en <a v-bind:href="'https://etherscan.io/address/' + ethAddress" target=_blank>Etherscan</a>)</p>
@@ -159,6 +160,7 @@ var status = {
      token_saldo: "0",
      faucet_canclaim: 0,
      web3: null,
+     flash: null, // Mensages etc
      tx: null, // Para comprobar en otro momento el estado
      dapp: dapp
 };
@@ -194,10 +196,8 @@ export default {
 
             console.log("BALANCE ES: " + this.balance)
 
-            window.alert("balance 0 - por aki")
-
             if (this.balance == "0") {
-               window.alert("balance 0 - por aki")
+               status.flash = "El balance de tu cartera Ethereum es 0 antes de llamar al contrato"
                status.isWalletConnected == true
                status.wizardStage = 'error-wallet'
                return false;
@@ -233,7 +233,7 @@ export default {
                   status.tx = tx
                   status.wizardStage = 'post-claim'
                }).catch( function(err) {
-                  window.alert(err)
+                  status.flash = "No se ha podido realizar la operación."
                   return err
                });
             return tx   
@@ -243,6 +243,7 @@ export default {
       setWizardStage: function(new_stage) {
          // ToDo: comprobar que la fase estaba registrada antes
          status.wizardStage = new_stage
+         status.flash = null
       }
    }
 }
@@ -261,6 +262,11 @@ export default {
 
 .wizard a:after {
 
+}
+
+#alert {
+   background: red;
+   color: #eee;
 }
 
 h3 {
