@@ -18,13 +18,21 @@
             <p>Para conseguir tus A¥USOs tienes que usar un navegador que soporte Ethereum, o instalar en tu navegador un plugin como <a href="https://metamask.io">Metamask</a>para activarlo.</p>
          </span>
 
-
-
         <span v-show="isEthereumEnabled && !isWalletConnected">
            <h2>Hola</h2>
            <p>Antes de conseguir tus A¥usoCoins, tienes que conectar una <em>Wallet</em> donde los vas a guardar.</p>
            <a href="#connectWallet" v-on:click="conectarWalletEthereum" class="btn btn-outline btn-outline-lg outline-dark">Conectar con Wallet Ethereum</a>
         </span>
+
+        <span v-show="isEthereumEnabled && isWalletConnected">
+           <h3> :-) </h3>
+           <ul>
+             <li>Tu navegados soporta Ethereum</li>
+             <li>Tu billetera (wallet) ethereum está conectada</li>
+           </ul>
+           <a href="#gotoPreClaim" v-on:click="setWizardStage('pre-claim')" class="btn btn-outline btn-outline-lg outline-dark">Siguiente paso</a>
+        </span>
+
      </div>
 
      <!-- error-wallet -->
@@ -182,7 +190,7 @@ export default {
             }
             contracts = await setupDapp(status.dapp.token_address, status.dapp.faucet_address) // ToDO error check
             await this.getSaldoTokens()
-            this.balance = await status.web3.eth.getBalance(status.ethAddress).then(x => { return x } )
+            this.balance = await status.cweb3.eth.getBalance(status.ethAddress).then(x => { return x } )
 
             console.log("BALANCE ES: " + this.balance)
 
