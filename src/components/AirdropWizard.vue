@@ -3,9 +3,17 @@
 
      <!-- stage0 - Botón de quiero mis ayusos -->
 
-     <span v-show="wizardStage == wizardStages[0]">
+     <span v-show="wizardStage == wizardStages[0]" align="center">
+     <h2>¿Como conseguir A¥USOCoin?</h2>
+     <img src="images/obras.gif">
+     <p class="lead">Ahora mismo estamos en obras.<br/> Si quieres A¥USOCoin tienes que esperar un par de horas, pero seguramente será menos ;-).</p>
+
+     </span>
+
+     <span v-show="1+1==7 && wizardStage == wizardStages[0]">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
+
 
      <!-- stage1 - conectar el wallet -->
 
