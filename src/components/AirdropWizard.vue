@@ -3,14 +3,14 @@
 
      <!-- stage0 - Botón de quiero mis ayusos -->
 
-     <span v-show="wizardStage == wizardStages[0]" align="center">
+     <span v-show="1 > 2 && wizardStage == wizardStages[0] " align="center">
      <h2>¿Como conseguir A¥USOCoin?</h2>
      <img src="images/obras.gif">
      <p class="lead">Ahora mismo estamos en obras.<br/> Si quieres A¥USOCoin tienes que esperar un par de horas, pero seguramente será menos ;-).</p>
 
      </span>
 
-     <span v-show="1+1==7 && wizardStage == wizardStages[0]">
+     <span v-show="wizardStage == wizardStages[0]">
        <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
      </span>
 
@@ -137,7 +137,7 @@ import {connectToEthereum, Dapp, setupDapp, formateaToken } from '../domain/help
 // Las direcciones de los contratos deberían estar en un fichero aparte
 var dapp = new Dapp(
   '0xa745005a2764ccbfeb1a8c6fca178f896af5d777', // Token Address
-  '0x0b70A904C77b90eBa8c3619dbE810669c193917d'  // Faucet contract address
+  '0xd5835954B94a0846A29D23C2402438a64d4b9f20'  // Faucet contract address
 )
 
 var contracts = {
