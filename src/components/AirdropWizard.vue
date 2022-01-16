@@ -3,15 +3,17 @@
 
      <!-- stage0 - Botón de quiero mis ayusos -->
 
-     <span v-show="1 > 2 && wizardStage == wizardStages[0] " align="center">
+     <span v-show="1 < 2 && wizardStage == wizardStages[0] " align="center">
      <h2>¿Como conseguir A¥USOCoin?</h2>
-     <img src="images/obras.gif">
-     <p class="lead">Ahora mismo estamos en obras.<br/> Si quieres A¥USOCoin tienes que esperar un par de horas, pero seguramente será menos ;-).</p>
+     <img src="images/obras.gif" style="width: 25%">
+     <p class="lead">Estamos migrando A¥USOCoin a la red <a href="polygon.technology" id="polygon">Polygon</a>. En breve podrás conseguir tus A¥USOCoin desde aquí.</p>
 
      </span>
 
      <span v-show="wizardStage == wizardStages[0]">
-       <a href="#walletconnect" v-on:click="setWizardStage('connect_wallet')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
+       <!-- Deshabilitado hasta que la web apunte a Polygon
+       <a href="#walletconnect" v-on:click="console.log('setWizardStage(connect_wallet)')" id="quieromisayusos" class="btn btn-outline btn-outline-lg outline-dark">&nbsp;Quiero MIS A&yen;USOS</a>
+       -->
      </span>
 
 

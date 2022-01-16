@@ -42,6 +42,7 @@ async function connectToEthereum() {
                     retval.isWalletConnected = true
                     retval.dis
                     const www3 = new Web3(window.ethereum)
+                    // Esto no le mola a Metamask
                     window.web3 = www3
                     return result[0]
                     })
@@ -57,8 +58,11 @@ async function setupDapp(token_addr, faucet_addr) {
     
     if (window.ethereum) {
         window.erc20 = ERC20ABI
+
+        // METAMASK_FIX
         const token = new window.web3.eth.Contract(ERC20ABI, token_addr)
         const faucet = new window.web3.eth.Contract(FaucetABI, faucet_addr)
+        // METAMASX_FIX
         return {
             token: token,
             faucet: faucet
