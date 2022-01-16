@@ -7,6 +7,7 @@
      <h2>¿Como conseguir A¥USOCoin?</h2>
      <img src="images/obras.gif" style="width: 25%">
      <p class="lead">Estamos migrando A¥USOCoin a la red <a href="polygon.technology" id="polygon">Polygon</a>. En breve podrás conseguir tus A¥USOCoin desde aquí.</p>
+     <p class="lead">Gracias por tu paciencia</p>
 
      </span>
 
